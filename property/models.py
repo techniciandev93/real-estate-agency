@@ -3,8 +3,15 @@ from django.utils import timezone
 
 
 class Flat(models.Model):
+    BUILDING_CHOICES = (
+        (True, 'новостройка'),
+        (False, 'старое здание'),
+        (None, 'не заполнено')
+    )
     owner = models.CharField('ФИО владельца', max_length=200)
     owners_phonenumber = models.CharField('Номер владельца', max_length=20)
+    new_building = models.BooleanField(choices=BUILDING_CHOICES, default=None, blank=True, null=True,
+                                       verbose_name='Здание')
     created_at = models.DateTimeField(
         'Когда создано объявление',
         default=timezone.now,
