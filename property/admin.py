@@ -3,10 +3,11 @@ from .models import Flat, Claim, Owner
 
 
 class OwnerAdminInline(admin.TabularInline):
-    model = Owner.owner_apartments.through
+    model = Owner.apartments.through
     raw_id_fields = ('owner',)
 
 
+@admin.register(Flat)
 class FlatAdmin(admin.ModelAdmin):
     search_fields = ('town', 'address')
     readonly_fields = ['created_at']
@@ -14,18 +15,15 @@ class FlatAdmin(admin.ModelAdmin):
                     'town')
     list_editable = ('new_building',)
     list_filter = ('new_building', 'rooms_number', 'has_balcony')
-    raw_id_fields = ('like',)
+    raw_id_fields = ('likes',)
     inlines = [OwnerAdminInline]
 
 
+@admin.register(Claim)
 class ClaimAdmin(admin.ModelAdmin):
     raw_id_fields = ('user', 'flat')
 
 
+@admin.register(Owner)
 class OwnerAdmin(admin.ModelAdmin):
-    raw_id_fields = ('owner_apartments',)
-
-
-admin.site.register(Flat,  FlatAdmin)
-admin.site.register(Claim,  ClaimAdmin)
-admin.site.register(Owner,  OwnerAdmin)
+    raw_id_fields = ('apartments',)
